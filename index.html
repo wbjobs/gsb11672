@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IndexedDB 大数据写入与配额管理</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <h1>IndexedDB 大数据写入与配额管理</h1>
+    <div class="badges">
+      <span id="badge-mode" class="badge badge-idb">模式：IndexedDB</span>
+      <span id="badge-quota" class="badge badge-muted">配额检测中…</span>
+      <span id="badge-privacy" class="badge badge-warn hidden">隐私/受限模式</span>
+    </div>
+  </header>
+
+  <main>
+    <section class="panel">
+      <h2>写入控制</h2>
+      <div class="controls">
+        <label>总数据量
+          <select id="opt-total">
+            <option value="16">16 MB</option>
+            <option value="64" selected>64 MB</option>
+            <option value="256">256 MB</option>
+            <option value="1024">1 GB</option>
+          </select>
+        </label>
+        <label>单条大小
+          <select id="opt-record">
+            <option value="1024">1 KB</option>
+            <option value="4096" selected>4 KB</option>
+            <option value="16384">16 KB</option>
+          </select>
+        </label>
+        <label>批大小
+          <select id="opt-batch">
+            <option value="25">25 条/批</option>
+            <option value="50" selected>50 条/批</option>
+            <option value="200">200 条/批</option>
+          </select>
+        </label>
+      </div>
+      <div class="buttons">
+        <button id="btn-start" class="primary">开始写入</button>
+        <button id="btn-pause" disabled>暂停</button>
+        <button id="btn-retry" disabled>重试</button>
+        <button id="btn-verify">校验数据</button>
+        <button id="btn-clear">清空数据</button>
+        <button id="btn-reset">全部重置</button>
+      </div>
+      <div class="buttons demo">
+        <span class="demo-label">异常演练：</span>
+        <button id="btn-sim-quota" class="ghost">下一批模拟配额不足</button>
+        <button id="btn-corrupt" class="ghost">注入一条损坏数据</button>
+      </div>
+      <div id="resume-banner" class="resume hidden">
+        检测到上次写入中断（<span id="resume-info"></span>），数据可无损恢复。
+        <button id="btn-resume" class="primary">恢复写入</button>
+        <button id="btn-discard" class="ghost">丢弃</button>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>写入进度</h2>
+      <div class="progress-track"><div id="progress-bar" class="progress-fill"></div></div>
+      <div class="stats-grid">
+        <div><span class="stat-label">进度</span><span id="stat-percent" class="stat-value">0%</span></div>
+        <div><span class="stat-label">记录</span><span id="stat-records" class="stat-value">0 / 0</span></div>
+        <div><span class="stat-label">已写入</span><span id="stat-bytes" class="stat-value">0 B</span></div>
+        <div><span class="stat-label">速度</span><span id="stat-speed" class="stat-value">0 B/s</span></div>
+        <div><span class="stat-label">重试次数</span><span id="stat-retries" class="stat-value">0</span></div>
+        <div><span class="stat-label">清理 / 驱逐</span><span id="stat-cleanup" class="stat-value">0 / 0 条</span></div>
+        <div><span class="stat-label">IDB 记录</span><span id="stat-idb" class="stat-value">0</span></div>
+        <div><span class="stat-label">内存记录</span><span id="stat-mem" class="stat-value">0</span></div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>配额监控</h2>
+      <div class="quota-layout">
+        <canvas id="quota-donut" width="220" height="220"></canvas>
+        <div class="quota-side">
+          <div class="quota-text">
+            <div>已用：<strong id="quota-usage">—</strong></div>
+            <div>配额：<strong id="quota-total">—</strong></div>
+            <div>占比：<strong id="quota-ratio">—</strong></div>
+            <div>持久化：<strong id="quota-persisted">—</strong></div>
+          </div>
+          <canvas id="quota-history" width="360" height="90"></canvas>
+          <div class="quota-caption">使用率历史（最近 60 次采样）</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>运行日志</h2>
+      <div id="log" class="log"></div>
+    </section>
+  </main>
+
+  <script src="js/util.js"></script>
+  <script src="js/engine.js"></script>
+  <script src="js/quota.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

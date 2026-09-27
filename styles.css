@@ -1,0 +1,142 @@
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: #0f1420;
+  color: #dfe6f3;
+  line-height: 1.5;
+}
+
+header {
+  padding: 20px 28px;
+  border-bottom: 1px solid #232c40;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+h1 { font-size: 20px; margin: 0; font-weight: 600; }
+h2 { font-size: 15px; margin: 0 0 14px; color: #9fb0cc; text-transform: uppercase; letter-spacing: .08em; }
+
+main { max-width: 960px; margin: 0 auto; padding: 20px 20px 60px; }
+
+.panel {
+  background: #171e2e;
+  border: 1px solid #232c40;
+  border-radius: 10px;
+  padding: 18px 20px;
+  margin-bottom: 18px;
+}
+
+.badges { display: flex; gap: 8px; flex-wrap: wrap; }
+
+.badge {
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+.badge-idb { background: #12382f; border-color: #1f6b58; color: #5fe0b0; }
+.badge-mem { background: #3d2c12; border-color: #8a5f1e; color: #ffc46b; }
+.badge-muted { background: #1d2536; border-color: #2c3750; color: #8596b5; }
+.badge-warn { background: #3d1f24; border-color: #7e2e3a; color: #ff8b98; }
+.hidden { display: none !important; }
+
+.controls { display: flex; gap: 18px; flex-wrap: wrap; margin-bottom: 14px; }
+.controls label { font-size: 13px; color: #9fb0cc; display: flex; flex-direction: column; gap: 5px; }
+select {
+  background: #0f1420;
+  color: #dfe6f3;
+  border: 1px solid #2c3750;
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 13px;
+}
+
+.buttons { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 4px; }
+.buttons.demo { margin-top: 12px; align-items: center; }
+.demo-label { font-size: 12px; color: #8596b5; }
+
+button {
+  background: #232e46;
+  color: #dfe6f3;
+  border: 1px solid #33415f;
+  border-radius: 7px;
+  padding: 8px 14px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background .15s, opacity .15s;
+}
+button:hover:not(:disabled) { background: #2d3b59; }
+button:disabled { opacity: .4; cursor: not-allowed; }
+button.primary { background: #2557d6; border-color: #3b6df0; color: #fff; }
+button.primary:hover:not(:disabled) { background: #3266e8; }
+button.ghost { background: transparent; border-style: dashed; }
+button.armed { background: #7a2a1e; border-color: #c34b32; border-style: solid; color: #ffd6cf; }
+
+.resume {
+  margin-top: 14px;
+  padding: 10px 14px;
+  background: #2a2314;
+  border: 1px solid #7a5a1e;
+  border-radius: 8px;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.progress-track {
+  height: 14px;
+  background: #0f1420;
+  border: 1px solid #2c3750;
+  border-radius: 999px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, #3b6df0, #5fe0b0);
+  border-radius: 999px;
+  transition: width .15s linear;
+}
+.progress-fill.degraded { background: linear-gradient(90deg, #c3802e, #ffc46b); }
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px 20px;
+  margin-top: 16px;
+}
+.stats-grid > div { display: flex; flex-direction: column; gap: 2px; }
+.stat-label { font-size: 12px; color: #8596b5; }
+.stat-value { font-size: 16px; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+.quota-layout { display: flex; gap: 28px; align-items: center; flex-wrap: wrap; }
+.quota-side { flex: 1; min-width: 300px; }
+.quota-text { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 16px; font-size: 14px; margin-bottom: 12px; }
+.quota-text strong { font-variant-numeric: tabular-nums; }
+#quota-history { width: 100%; max-width: 360px; height: 90px; background: #0f1420; border: 1px solid #232c40; border-radius: 8px; }
+.quota-caption { font-size: 12px; color: #8596b5; margin-top: 4px; }
+
+.log {
+  height: 240px;
+  overflow-y: auto;
+  background: #0f1420;
+  border: 1px solid #232c40;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-size: 12px;
+}
+.log-line { margin: 0 0 3px; white-space: pre-wrap; word-break: break-all; }
+.log-time { color: #5d6d8c; margin-right: 8px; }
+.log-info { color: #aebcda; }
+.log-warn { color: #ffc46b; }
+.log-error { color: #ff8b98; }
+.log-ok { color: #5fe0b0; }
