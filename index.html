@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IndexedDB 批量写入与配额管理</title>
+  <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body>
+  <header>
+    <h1>IndexedDB 批量写入 · 配额监控 · 异常降级</h1>
+    <p class="subtitle">Web Worker 生成数据 · StorageManager 配额监控 · CRC32 完整性校验 · LRU 清理 · 内存降级</p>
+  </header>
+
+  <div id="banner" class="banner" hidden></div>
+
+  <main>
+    <section class="panel controls">
+      <h2>写入控制</h2>
+      <div class="field-row">
+        <label>记录数
+          <input id="record-count" type="number" value="5000" min="1" max="1000000">
+        </label>
+        <label>单条大小 (KB)
+          <input id="payload-size" type="number" value="4" min="1" max="1024">
+        </label>
+        <label>批次大小
+          <input id="batch-size" type="number" value="100" min="1" max="5000">
+        </label>
+      </div>
+      <div class="button-row">
+        <button id="btn-start" class="primary">开始写入</button>
+        <button id="btn-pause" disabled>暂停</button>
+        <button id="btn-resume" hidden>恢复任务</button>
+        <button id="btn-retry-failed" disabled>重试失败批次</button>
+        <button id="btn-verify">校验完整性</button>
+        <button id="btn-evict">立即清理 (LRU)</button>
+        <button id="btn-clear">清空数据</button>
+        <button id="btn-reset" class="danger">重置数据库</button>
+        <button id="btn-persist">请求持久化</button>
+      </div>
+      <fieldset class="fault-injection">
+        <legend>故障注入(演示异常链路)</legend>
+        <label><input id="inject-abort" type="checkbox"> 随机中断事务</label>
+        <label><input id="inject-quota" type="checkbox"> 模拟配额不足</label>
+        <button id="btn-corrupt" type="button">篡改一条记录</button>
+      </fieldset>
+    </section>
+
+    <section class="panel status">
+      <h2>状态</h2>
+      <div class="progress">
+        <div id="progress-fill" class="progress-fill"></div>
+      </div>
+      <div id="progress-text" class="progress-text">0.0% (0/0)</div>
+      <div class="stat-grid">
+        <div class="stat"><span class="stat-label">存储模式</span><span id="stat-mode" class="stat-value">—</span></div>
+        <div class="stat"><span class="stat-label">已写入</span><span id="stat-written" class="stat-value">0 / 0</span></div>
+        <div class="stat"><span class="stat-label">IDB 记录</span><span id="stat-idb" class="stat-value">0</span></div>
+        <div class="stat"><span class="stat-label">内存记录</span><span id="stat-memory" class="stat-value">0</span></div>
+        <div class="stat"><span class="stat-label">失败批次</span><span id="stat-failed" class="stat-value">0</span></div>
+        <div class="stat"><span class="stat-label">重试次数</span><span id="stat-retried" class="stat-value">0</span></div>
+        <div class="stat"><span class="stat-label">已清理</span><span id="stat-evicted" class="stat-value">0</span></div>
+        <div class="stat"><span class="stat-label">损坏记录</span><span id="stat-corrupt" class="stat-value">0</span></div>
+      </div>
+    </section>
+
+    <section class="panel quota">
+      <h2>配额可视化</h2>
+      <canvas id="quota-canvas" width="220" height="220"></canvas>
+      <div id="quota-detail" class="quota-detail">加载中…</div>
+    </section>
+
+    <section class="panel log-panel">
+      <h2>运行日志</h2>
+      <div id="log" class="log"></div>
+    </section>
+  </main>
+
+  <script type="module" src="./js/main.js"></script>
+</body>
+</html>
